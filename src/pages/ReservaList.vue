@@ -6,8 +6,8 @@
             :table-style="{ width: '100%' }"
             :dense="$q.screen.lt.lg"
             :grid="$q.screen.lt.sm"
-            title="Professors"
-            :rows="usuaris"
+            title="Les meves reserves"
+            :rows="reserves"
             :columns="columnes"
             row-key="idusuari"
             :filter="filter"
@@ -18,22 +18,6 @@
                   <q-icon name="search"/>
                 </template>
               </q-input>
-            </template>
-
-            <template v-slot:body-cell-foto="props">
-              <q-td :props="props">
-                <q-img
-                  :src="pathPhotos+props.value"
-                  style="width: 50px"
-                  class="q-ml-lg"
-                >
-                  <template v-slot:error>
-                    <div style="width: 50px; height: 50px;" class="absolute-full flex flex-center bg-negative text-white">
-                      Error
-                    </div>
-                  </template>
-                </q-img>
-              </q-td>
             </template>
 
             <template v-slot:body-cell-accions="props">
@@ -59,6 +43,7 @@
 import {defineComponent} from 'vue';
 import {QTableColumn} from "quasar";
 import {Reserva} from "src/model/Reserva";
+import {ReservatService} from "src/service/ReservaService";
 
 export default defineComponent({
   name: 'UsuariList',
@@ -173,8 +158,8 @@ export default defineComponent({
         }
       ]
 
-      const usuaris = await UsuariProfessorService.findUsuaris();
-      this.usuaris = await Promise.all(usuaris);
+      const reserves = await ReservatService.findAll();
+      this.reserves = await Promise.all(reserves);
     }
   },
 })

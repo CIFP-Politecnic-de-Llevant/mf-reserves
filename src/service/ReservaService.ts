@@ -9,7 +9,7 @@ export class ReservatService {
     return this.fromJSON(data)
   }
 
-  static async getDepartaments(): Promise<Array<Reserva>> {
+  static async findAll(): Promise<Array<Reserva>> {
     const response = await axios.get(process.env.API + '/api/core/departament/llistat');
     const data = await response.data;
     return Promise.all(data.map(async (reserva:any):Promise<Reserva>=>{
@@ -20,9 +20,10 @@ export class ReservatService {
   static async fromJSON(json:any):Promise<Reserva>{
     return {
       id: json.iddepartament,
-      nom: json.gestibNom,
-      gestibId: json.gestibIdentificador,
-      capDepartament: (json.capDepartament)?await ReservaService.fromJSON(json.capDepartament):undefined
+      descripcio: json.gestibNom,
+      dataInici: json.gestibIdentificador,
+      dataFi: json.gestibIdentificador,
+      usuari: json.gestibIdentificador,
     }
   }
 }
