@@ -57,16 +57,15 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {UsuariProfessorService} from "src/service/UsuariProfessorService";
 import {QTableColumn} from "quasar";
-import {UsuariProfessor} from "src/model/UsuariProfessor";
+import {Reserva} from "src/model/Reserva";
 
 export default defineComponent({
   name: 'UsuariList',
   data() {
     return {
       columnes: [] as QTableColumn[],
-      usuaris: [] as UsuariProfessor[],
+      reserves: [] as Reserva[],
       filter: ''
     }
   },

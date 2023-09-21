@@ -1,47 +1,28 @@
 import {axios}  from 'boot/axios'
-import {Departament} from "../model/Departament";
-import {UsuariService} from "./UsuariService";
+import {Reserva} from "../model/Reserva";
 
-export class DepartamentService {
+export class ReservatService {
 
-  static async getDepartamentById(id:string): Promise<Departament> {
+  static async getDepartamentById(id:string): Promise<Reserva> {
     const response = await axios.get(process.env.API + '/api/core/departament/getById/' + id);
     const data:any = await response.data;
     return this.fromJSON(data)
   }
 
-  static async getDepartamentByCodiGestib(id:string): Promise<Departament> {
-    const response = await axios.get(process.env.API + '/api/core/departament/getByCodiGestib/' + id);
-    const data = await response.data;
-    return this.fromJSON(data)
-  }
-
-  static async getDepartaments(): Promise<Array<Departament>> {
+  static async getDepartaments(): Promise<Array<Reserva>> {
     const response = await axios.get(process.env.API + '/api/core/departament/llistat');
     const data = await response.data;
-    return Promise.all(data.map(async (departament:any):Promise<Departament>=>{
-        return await this.fromJSON(departament)
+    return Promise.all(data.map(async (reserva:any):Promise<Reserva>=>{
+        return await this.fromJSON(reserva)
     }));
   }
 
-  static async generarScriptDepartament(id:number) {
-    await axios.post(process.env.API + '/api/professoratmanager/departament/generarScript',{
-      id:id
-    });
-  }
-
-  static async recuperarBackupScriptDepartament(id:number) {
-    await axios.post(process.env.API + '/api/professoratmanager/departament/recuperarBackupScript',{
-      id:id
-    });
-  }
-
-  static async fromJSON(json:any):Promise<Departament>{
+  static async fromJSON(json:any):Promise<Reserva>{
     return {
       id: json.iddepartament,
       nom: json.gestibNom,
       gestibId: json.gestibIdentificador,
-      capDepartament: (json.capDepartament)?await UsuariService.fromJSON(json.capDepartament):undefined
+      capDepartament: (json.capDepartament)?await ReservaService.fromJSON(json.capDepartament):undefined
     }
   }
 }
