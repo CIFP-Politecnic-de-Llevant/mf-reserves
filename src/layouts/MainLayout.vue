@@ -12,10 +12,10 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          GestSuite - Departaments
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <Menuapp v-if="enableApps && (rolsUser.find(rol=>rol===rols.ADMINISTRADOR || rol===rols.DIRECTOR || rol===rols.CAP_ESTUDIS || rol===rols.ADMINISTRATIU || rol===rols.WEB))"></Menuapp>
       </q-toolbar>
     </q-header>
 
@@ -25,17 +25,14 @@
       bordered
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item clickable to="/usuaris">
+          <q-item-section avatar>
+            <q-icon name="group" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Reserves Aula Magna</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -45,72 +42,45 @@
   </q-layout>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
-import EssentialLink from 'components/EssentialLink.vue';
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
+<script>
+
+import { defineComponent,ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import {Rol} from '../model/Rol.ts'
+import Menuapp from '../components/common/AppsMenu.vue';
+
 
 export default defineComponent({
   name: 'MainLayout',
-
-  components: {
-    EssentialLink
+  components:{
+    Menuapp
   },
-
   setup () {
     const leftDrawerOpen = ref(false)
+    const rolsUser = JSON.parse(localStorage.getItem("rol")) || []; //Inicialitzem a un array buit si no existeix cap rol
+    const router = useRouter()
+    const route = useRoute()
+    const rols = Rol;
+
+    const enableGrupsCooperatius = (process.env.APP_ENABLE_GRUPSCOOPERATIUS==='true');
+    const enableConvalidacions=(process.env.APP_ENABLE_CONVALIDACIONS==='true');
+    const enableProfessoratManager=(process.env.APP_ENABLE_PROFESSORATMANAGER==='true');
+
+    const enableApps = enableGrupsCooperatius || enableConvalidacions || enableProfessoratManager;
 
     return {
-      essentialLinks: linksList,
+      rolsUser,
+      rols,
+      enableApps,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
+      },
+      goBack(){
+        router.go(-1);
       }
     }
   }
-});
+})
 </script>
