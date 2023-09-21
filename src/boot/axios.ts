@@ -112,4 +112,4 @@ export default boot(({ app,router }) => {
   //       so you can easily perform requests against your app's API
 });
 
-export { api };
+export { api,axios };
