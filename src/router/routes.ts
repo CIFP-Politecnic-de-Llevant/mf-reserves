@@ -8,6 +8,8 @@ const routes: RouteRecordRaw[] = [
       { path: '', component: () => import('pages/ReservaList.vue') },
       { path: 'reserves', component: () => import('pages/ReservaList.vue') },
       { path: 'reserva/:id', component: () => import('pages/ReservaForm.vue') },
+      { path: 'login', component: () => import('components/common/Login.vue'), props: { urlRedirect: "/reserves" } },
+      { path: 'logout', component: () => import('components/common/Logout.vue') },
     ],
   },
 
