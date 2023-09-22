@@ -5,44 +5,26 @@
 
     <q-input v-model="reserva.descripcio" label="Motiu de la reserva"/>
 
-    <!--
-        <q-input v-model="usuari.nom" label="Nom complet"/>
 
-        <div class="flex">
-          <q-input v-model="usuari.foto" label="Foto" class="col q-mr-lg" />
-          <div class="col">
-            <q-img
-              :src="pathPhotos+usuari.foto"
-              style="height: 140px; max-width: 150px"
-              class="q-ml-lg"
-            >
-              <template v-slot:error>
-                <div class="absolute-full flex flex-center bg-negative text-white">
-                  Error carregant la imatge
-                </div>
-              </template>
-            </q-img>
-          </div>
+    <div class="flex justify-center">
+      <div class="q-ma-lg">
+        <p class="text-subtitle1">Data inici reserva</p>
+        <div class="q-gutter-md row items-start">
+          <q-date v-model="reserva.dataInici" mask="YYYY-MM-DD HH:mm" color="primary" />
+          <q-time v-model="reserva.dataInici" mask="YYYY-MM-DD HH:mm" color="primary" />
         </div>
-        <q-input v-model="usuari.carrec1" label="Càrrec 1" />
-        <q-input v-model="usuari.carrec2" label="Càrrec 2" />
-        <q-input v-model="usuari.carrec3" label="Càrrec 3" />
+      </div>
 
-        <q-select
-          v-model="usuari.substitut"
-          :options="usuaris"
-          label="Usuari substitut"
-          class="q-mb-lg"
-        >
-          <template v-if="usuari.substitut" v-slot:append>
-            <q-icon name="cancel" @click.stop.prevent="usuari.substitut = null" class="cursor-pointer" />
-          </template>
-        </q-select>
+      <div class="q-ma-lg">
+        <p class="text-subtitle1">Data fi reserva</p>
+        <div class="q-gutter-md row items-start">
+          <q-date v-model="reserva.dataFi" mask="YYYY-MM-DD HH:mm" color="primary" />
+          <q-time v-model="reserva.dataFi" mask="YYYY-MM-DD HH:mm" color="primary" />
+        </div>
+      </div>
+    </div>
 
-        <q-checkbox v-model="usuari.visible" label="Visible al departament?" />
-
-        <q-btn color="primary" icon="save" label="Desar" @click="save" />
-    -->
+    <q-btn color="primary" icon="save" label="Desar" @click="save" />
   </q-page>
 </template>
 
@@ -50,9 +32,24 @@
 
 import {Ref, ref} from "vue";
 import {Reserva} from "src/model/Reserva";
+import {ReservatService} from "src/service/ReservaService";
 
 const reserva:Ref<Reserva> = ref({} as Reserva);
 
+async function save(){
+  const dialog = this.$q.dialog({
+    message: 'Carregant...',
+    progress: true, // we enable default settings
+    persistent: true, // we want the user to not be able to close it
+    ok: false // we want the user to not be able to close it
+  })
+
+  await ReservatService.save(reserva)
+  dialog.hide();
+
+  //Redirect
+  await this.$router.push('/usuaris');
+}
 
 /*
 import { defineComponent } from 'vue';

@@ -17,6 +17,10 @@ export class ReservatService {
     }));
   }
 
+  static async save(reserva:Reserva){
+    await axios.post(process.env.API + '/api/reserves/reserva/desar',reserva);
+  }
+
   static async fromJSON(json:any):Promise<Reserva>{
     return {
       id: json.idReserva,
