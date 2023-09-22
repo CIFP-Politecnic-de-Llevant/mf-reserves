@@ -2,10 +2,10 @@
   <q-page class="flex column" padding>
       <div class="row">
         <div class="col-12">
-          hola
-          {{reserves}}
-          adeu
-          :filter="filter"
+          <q-btn-group push class="q-mb-lg">
+            <q-btn  color="primary" label="Nova reserva" icon="add" :to="'/reserva'"/>
+          </q-btn-group>
+
           <q-table
             :table-style="{ width: '100%' }"
             :dense="$q.screen.lt.lg"
@@ -13,14 +13,15 @@
             title="Les meves reserves"
             :rows="reserves"
             :columns="columnes"
-            row-key="idusuari"
+            row-key="id"
+            :filter="filter"
           >
             <template v-slot:top-right>
-              <!--q-input borderless dense debounce="300" v-model="filter" placeholder="Cerca">
+              <q-input borderless dense debounce="300" v-model="filter" placeholder="Cerca">
                 <template v-slot:append>
                   <q-icon name="search"/>
                 </template>
-              </q-input-->
+              </q-input>
             </template>
 
             <template v-slot:body-cell-accions="props">
@@ -77,6 +78,8 @@ const columnes:QTableColumn[] = [
     sortable: true
   }
 ]
+
+const filter = ref('')
 
 onMounted(async ()=>{
   reserves.value = await ReservatService.findAll();
