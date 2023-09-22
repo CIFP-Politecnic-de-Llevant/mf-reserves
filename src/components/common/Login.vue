@@ -44,9 +44,6 @@
 
 <script>
 
-  import {PropType} from "vue";
-  import {Meta, Todo} from "components/models";
-
   export default {
     name: 'Login',
     props: {
