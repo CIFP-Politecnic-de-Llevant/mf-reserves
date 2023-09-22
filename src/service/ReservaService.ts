@@ -4,13 +4,13 @@ import {Reserva} from "../model/Reserva";
 export class ReservatService {
 
   static async getDepartamentById(id:string): Promise<Reserva> {
-    const response = await axios.get(process.env.API + '/api/core/departament/getById/' + id);
+    const response = await axios.get(process.env.API + '/api/reserves/departament/getById/' + id);
     const data:any = await response.data;
     return this.fromJSON(data)
   }
 
   static async findAll(): Promise<Array<Reserva>> {
-    const response = await axios.get(process.env.API + '/api/core/departament/llistat');
+    const response = await axios.get(process.env.API + '/api/reserves/reserves');
     const data = await response.data;
     return Promise.all(data.map(async (reserva:any):Promise<Reserva>=>{
         return await this.fromJSON(reserva)
