@@ -19,11 +19,11 @@ export class ReservatService {
 
   static async fromJSON(json:any):Promise<Reserva>{
     return {
-      id: json.iddepartament,
-      descripcio: json.gestibNom,
-      dataInici: json.gestibIdentificador,
-      dataFi: json.gestibIdentificador,
-      usuari: json.gestibIdentificador,
+      id: json.idReserva,
+      descripcio: json.descripcio,
+      dataInici: json.dataInici,
+      dataFi: json.dataFi,
+      usuari: json.usuari,
     }
   }
 }

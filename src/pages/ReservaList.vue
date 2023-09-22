@@ -2,6 +2,10 @@
   <q-page class="flex column" padding>
       <div class="row">
         <div class="col-12">
+          hola
+          {{reserves}}
+          adeu
+          :filter="filter"
           <q-table
             :table-style="{ width: '100%' }"
             :dense="$q.screen.lt.lg"
@@ -10,14 +14,13 @@
             :rows="reserves"
             :columns="columnes"
             row-key="idusuari"
-            :filter="filter"
           >
             <template v-slot:top-right>
-              <q-input borderless dense debounce="300" v-model="filter" placeholder="Cerca">
+              <!--q-input borderless dense debounce="300" v-model="filter" placeholder="Cerca">
                 <template v-slot:append>
                   <q-icon name="search"/>
                 </template>
-              </q-input>
+              </q-input-->
             </template>
 
             <template v-slot:body-cell-accions="props">
@@ -39,128 +42,45 @@
   </q-page>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
+
+import {onMounted, Ref, ref} from "vue";
+import {ReservatService} from "src/service/ReservaService";
 import {QTableColumn} from "quasar";
 import {Reserva} from "src/model/Reserva";
-import {ReservatService} from "src/service/ReservaService";
+import moment from 'moment'
 
-export default defineComponent({
-  name: 'UsuariList',
-  data() {
-    return {
-      columnes: [] as QTableColumn[],
-      reserves: [] as Reserva[],
-      filter: ''
-    }
+const reserves:Ref<Reserva[]> = ref([] as Reserva[]);
+const columnes:QTableColumn[] = [
+  {
+    name: 'descripcio',
+    required: true,
+    label: 'Descripció',
+    align: 'left',
+    field: row => row.descripcio,
+    sortable: true
   },
-  created() {
-    this.get();
+  {
+    name: 'datainici',
+    required: true,
+    label: 'Data Inici',
+    align: 'left',
+    field: row => moment(row.dataInici).format("DD/MM/YYYY HH:mm"),
+    sortable: true
   },
-  methods: {
-    get: async function () {
-      this.columnes = [
-        {
-          name: 'nom',
-          required: true,
-          label: 'Nom complet',
-          align: 'left',
-          field: row => row.nom,
-          sortable: true
-        },
-        {
-          name: 'email',
-          required: true,
-          label: 'Correu electrònic',
-          align: 'left',
-          field: row => (row.professor && row.professor.email)?row.professor.email:'',
-          sortable: true
-        },
-        {
-          name: 'foto',
-          required: true,
-          label: 'Foto',
-          align: 'left',
-          field: row => row.foto,
-          sortable: true
-        },
-        {
-          name: 'carrec1',
-          required: true,
-          label: 'Càrrec 1',
-          align: 'left',
-          field: row => row.carrec1,
-          sortable: true
-        },
-        {
-          name: 'carrec2',
-          required: true,
-          label: 'Càrrec 2',
-          align: 'left',
-          field: row => row.carrec2,
-          sortable: true
-        },
-        {
-          name: 'carrec3',
-          required: true,
-          label: 'Càrrec 3',
-          align: 'left',
-          field: row => row.carrec3,
-          sortable: true
-        },
-        {
-          name: 'departament',
-          required: true,
-          label: 'Departament',
-          align: 'left',
-          field: row => (row.departament && row.departament.nom)?row.departament.nom:'',
-          sortable: true
-        },
-        {
-          name: 'horariatenciopares',
-          required: true,
-          label: 'Horari Atenció Pares',
-          align: 'left',
-          field: row => (row.horariAtencioPares)?row.horariAtencioPares:'',
-          sortable: true
-        },
-        {
-          name: 'tutoria',
-          required: true,
-          label: 'Tutoria',
-          align: 'left',
-          field: row => (row.tutoria)?row.tutoria:'',
-          sortable: true
-        },
-        {
-          name: 'substitut',
-          required: true,
-          label: 'Substitut',
-          align: 'left',
-          field: row => (row.substitut && row.substitut.professor)?row.substitut.professor.nomComplet:'',
-          sortable: true
-        },
-        {
-          name: 'visible',
-          required: true,
-          label: 'Visible?',
-          align: 'left',
-          field: row => (row.visible)?'Si':'No',
-          sortable: true
-        },
-        {
-          name: 'accions',
-          required: true,
-          label: 'Accions',
-          align: 'center',
-          field: row => row.id,
-          sortable: true
-        }
-      ]
+  {
+    name: 'datafi',
+    required: true,
+    label: 'Data Fi',
+    align: 'left',
+    field: row => moment(row.dataFi).format("DD/MM/YYYY HH:mm"),
+    sortable: true
+  }
+]
 
-      const reserves = await ReservatService.findAll();
-      this.reserves = await Promise.all(reserves);
-    }
-  },
+onMounted(async ()=>{
+  reserves.value = await ReservatService.findAll();
+  console.log("reserves",reserves.value)
 })
+
 </script>
