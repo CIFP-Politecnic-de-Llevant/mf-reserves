@@ -2,7 +2,7 @@
   <q-page class="flex column q-gutter-lg" padding>
 
     <p class="text-h3">{{reserva.descripcio || 'Nova reserva'}}</p>
-
+    <p class="text-subtitle2">Comprova la disponibilitat del calendari <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/u/0/embed?src=c_fde278d64cd5f4b1b2d54ce1e07a948ab1fdfdf92d411a68433043bab8f17f3a@group.calendar.google.com&ctz=Europe/Madrid">AQUÍ</a></p>
     <q-input v-model="reserva.descripcio" label="Motiu de la reserva"/>
 
 
@@ -33,22 +33,27 @@
 import {Ref, ref} from "vue";
 import {Reserva} from "src/model/Reserva";
 import {ReservatService} from "src/service/ReservaService";
+import {useQuasar} from "quasar";
+import {useRouter} from "vue-router";
+
+const $q = useQuasar()
+const $router = useRouter();
 
 const reserva:Ref<Reserva> = ref({} as Reserva);
 
 async function save(){
-  const dialog = this.$q.dialog({
+  const dialog = $q.dialog({
     message: 'Carregant...',
     progress: true, // we enable default settings
     persistent: true, // we want the user to not be able to close it
     ok: false // we want the user to not be able to close it
   })
 
-  await ReservatService.save(reserva)
+  await ReservatService.save(reserva.value)
   dialog.hide();
 
   //Redirect
-  await this.$router.push('/usuaris');
+  await $router.push('/reserves');
 }
 
 /*

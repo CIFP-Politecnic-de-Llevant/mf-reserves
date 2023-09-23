@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          GestSuite - Departaments
+          GestSuite - Reserva d'espais
         </q-toolbar-title>
 
         <Menuapp v-if="enableApps && (rolsUser.find(rol=>rol===rols.ADMINISTRADOR || rol===rols.DIRECTOR || rol===rols.CAP_ESTUDIS || rol===rols.ADMINISTRATIU || rol===rols.WEB))"></Menuapp>
@@ -25,7 +25,7 @@
       bordered
     >
       <q-list>
-        <q-item clickable to="/usuaris">
+        <q-item clickable to="/reserves">
           <q-item-section avatar>
             <q-icon name="group" />
           </q-item-section>
