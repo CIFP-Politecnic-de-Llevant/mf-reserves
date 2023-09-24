@@ -87,7 +87,7 @@ const columnes:QTableColumn[] = [
     required: true,
     label: 'Accions',
     align: 'center',
-    field: row => row.idusuari,
+    field: row => row.id,
     sortable: true
   }
 ]
@@ -97,7 +97,7 @@ const filter = ref('')
 function esborrar(id:number){
   this.$q.dialog({
     title: 'Confirm',
-    message: 'Vol eliminar aquesta categoria?',
+    message: 'Vol eliminar aquesta reserva?',
     ok: "D'acord",
     cancel: "Cancel·la",
     persistent: true
@@ -110,7 +110,7 @@ function esborrar(id:number){
 }
 
 onMounted(async ()=>{
-  reserves.value = await ReservatService.findAll();
+  reserves.value = await ReservatService.findAllMyReserves();
   console.log("reserves",reserves.value)
 })
 

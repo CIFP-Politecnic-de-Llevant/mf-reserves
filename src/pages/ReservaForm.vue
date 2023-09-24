@@ -10,6 +10,7 @@
       <div class="q-ma-lg">
         <p class="text-subtitle1">Data inici reserva</p>
         <div class="q-gutter-md row items-start">
+          {{reserva.dataInici}}
           <q-date v-model="reserva.dataInici" mask="YYYY-MM-DD HH:mm" color="primary" />
           <q-time v-model="reserva.dataInici" mask="YYYY-MM-DD HH:mm" color="primary" />
         </div>
@@ -30,18 +31,53 @@
 
 <script lang="ts" setup>
 
-import {Ref, ref} from "vue";
+import {onMounted, Ref, ref} from "vue";
 import {Reserva} from "src/model/Reserva";
 import {ReservatService} from "src/service/ReservaService";
-import {useQuasar} from "quasar";
-import {useRouter} from "vue-router";
+import {Notify, useQuasar} from "quasar";
+import {useRoute, useRouter} from "vue-router";
+import moment from 'moment'
 
 const $q = useQuasar()
-const $router = useRouter();
+const $router = useRouter()
+const $route = useRoute()
 
 const reserva:Ref<Reserva> = ref({} as Reserva);
 
 async function save(){
+  if(!reserva.value.descripcio){
+    Notify.create({
+      message: "El motiu de la reserva és obligatori",
+      type: 'negative'
+    })
+    return;
+  }
+
+  if(!reserva.value.dataInici){
+    Notify.create({
+      message: "La data d'inici és obligatòria",
+      type: 'negative'
+    })
+    return;
+  }
+
+  if(!reserva.value.dataFi){
+    Notify.create({
+      message: "La data de fi és obligatòria",
+      type: 'negative'
+    })
+    return;
+  }
+
+  if(reserva.value.dataInici && reserva.value.dataFi && moment(reserva.value.dataInici) > moment(reserva.value.dataFi)){
+    Notify.create({
+      message: "La data d'inici no pot ser posterior a la data de fi",
+      type: 'negative'
+    })
+    return;
+  }
+
+
   const dialog = $q.dialog({
     message: 'Carregant...',
     progress: true, // we enable default settings
@@ -55,4 +91,17 @@ async function save(){
   //Redirect
   await $router.push('/reserves');
 }
+
+onMounted(async ()=>{
+  const id:string = ($route.params.id)?$route.params.id+'':'';
+
+  if(id && id!='') {
+    reserva.value = await ReservatService.getReservaById(id);
+
+    //Parsejam les dates
+    reserva.value.dataInici = moment(reserva.value.dataInici).format("YYYY-MM-DD HH:mm");
+    reserva.value.dataFi = moment(reserva.value.dataFi).format("YYYY-MM-DD HH:mm");
+    console.log(reserva.value);
+  }
+})
 </script>
