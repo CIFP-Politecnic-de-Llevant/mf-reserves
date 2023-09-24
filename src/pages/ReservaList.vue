@@ -33,6 +33,11 @@
                         Editar
                       </q-tooltip>
                     </q-btn>
+                    <q-btn icon="delete" color="primary" dense @click="esborrar(props.value)">
+                      <q-tooltip>
+                        Esborra
+                      </q-tooltip>
+                    </q-btn>
                   </q-btn-group>
                 </div>
               </q-td>
@@ -76,10 +81,33 @@ const columnes:QTableColumn[] = [
     align: 'left',
     field: row => moment(row.dataFi).format("DD/MM/YYYY HH:mm"),
     sortable: true
+  },
+  {
+    name: 'accions',
+    required: true,
+    label: 'Accions',
+    align: 'center',
+    field: row => row.idusuari,
+    sortable: true
   }
 ]
 
 const filter = ref('')
+
+function esborrar(id:number){
+  this.$q.dialog({
+    title: 'Confirm',
+    message: 'Vol eliminar aquesta categoria?',
+    ok: "D'acord",
+    cancel: "Cancel·la",
+    persistent: true
+  }).onOk(async () => {
+    console.log('>>>> OK',id)
+    await ReservatService.esborrar(id);
+    //Refresh data
+    window.location.reload();
+  })
+}
 
 onMounted(async ()=>{
   reserves.value = await ReservatService.findAll();

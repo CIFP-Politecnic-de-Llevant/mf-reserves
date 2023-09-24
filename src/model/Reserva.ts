@@ -5,7 +5,8 @@ export interface Reserva {
   descripcio: string;
   dataInici: Date;
   dataFi: Date;
-  usuari: Usuari;
-  label?: string;
-  value?: string;
+  usuariEmail:string;
+  usuariNom:string;
+  idCalendar:string;
+  idCalendarEvent:string;
 }
