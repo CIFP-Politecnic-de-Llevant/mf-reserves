@@ -83,6 +83,14 @@ const columnes:QTableColumn[] = [
     sortable: true
   },
   {
+    name: 'usuari',
+    required: true,
+    label: 'Usuari',
+    align: 'left',
+    field: row => row.usuariNom,
+    sortable: true
+  },
+  {
     name: 'accions',
     required: true,
     label: 'Accions',
