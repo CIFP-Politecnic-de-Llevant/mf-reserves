@@ -3,7 +3,7 @@
       <div class="row">
         <div class="col-12">
 
-          <p class="text-subtitle2">Visualitza el calendari <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/embed?src=a3bf8c6e334586334fd997350ecf04e6057c5e4b09a62a4e6dd951ef9955cf92%40group.calendar.google.com&ctz=Europe%2FMadrid">AQUÍ</a></p>
+          <p class="text-subtitle2">Visualitza el calendari <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/u/0?cid=YTNiZjhjNmUzMzQ1ODYzMzRmZDk5NzM1MGVjZjA0ZTYwNTdjNWU0YjA5YTYyYTRlNmRkOTUxZWY5OTU1Y2Y5MkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">AQUÍ</a></p>
           <p class="text-subtitle2">Afegeix el calendari en format iCal amb aquesta URL: <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/ical/a3bf8c6e334586334fd997350ecf04e6057c5e4b09a62a4e6dd951ef9955cf92%40group.calendar.google.com/public/basic.ics">https://calendar.google.com/calendar/ical/a3bf8c6e334586334fd997350ecf04e6057c5e4b09a62a4e6dd951ef9955cf92%40group.calendar.google.com/public/basic.ics</a></p>
 
           <q-btn-group push class="q-mb-lg">

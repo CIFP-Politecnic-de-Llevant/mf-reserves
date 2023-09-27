@@ -3,7 +3,7 @@
 
     <p class="text-h3">{{reserva.descripcio || 'Nova reserva'}}</p>
     <p v-if="reserva.id">Usuari reserva: {{reserva.usuariNom}} ({{reserva.usuariEmail}})</p>
-    <p class="text-subtitle2">Comprova la disponibilitat del calendari <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/embed?src=a3bf8c6e334586334fd997350ecf04e6057c5e4b09a62a4e6dd951ef9955cf92%40group.calendar.google.com&ctz=Europe%2FMadrid">AQUÍ</a></p>
+    <p class="text-subtitle2">Comprova la disponibilitat del calendari <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/u/0?cid=YTNiZjhjNmUzMzQ1ODYzMzRmZDk5NzM1MGVjZjA0ZTYwNTdjNWU0YjA5YTYyYTRlNmRkOTUxZWY5OTU1Y2Y5MkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">AQUÍ</a></p>
     <q-input v-model="reserva.descripcio" label="Motiu de la reserva"/>
 
 
