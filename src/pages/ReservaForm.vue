@@ -2,7 +2,6 @@
   <q-page class="flex column q-gutter-lg" padding>
 
     <p class="text-h3">{{reserva.descripcio || 'Nova reserva'}}</p>
-    <p v-if="reserva.id">Usuari reserva: {{reserva.usuariNom}} ({{reserva.usuariEmail}})</p>
     <p class="text-subtitle2">Comprova la disponibilitat del calendari <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/u/0?cid=YTNiZjhjNmUzMzQ1ODYzMzRmZDk5NzM1MGVjZjA0ZTYwNTdjNWU0YjA5YTYyYTRlNmRkOTUxZWY5OTU1Y2Y5MkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">AQUÍ</a></p>
     <q-input v-model="reserva.descripcio" label="Motiu de la reserva"/>
 
