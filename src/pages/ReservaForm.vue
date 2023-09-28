@@ -10,7 +10,6 @@
       <div class="q-ma-lg">
         <p class="text-subtitle1">Data inici reserva</p>
         <div class="q-gutter-md row items-start">
-          {{reserva.dataInici}}
           <q-date v-model="reserva.dataInici" mask="YYYY-MM-DD HH:mm" color="primary" />
           <q-time v-model="reserva.dataInici" mask="YYYY-MM-DD HH:mm" color="primary" />
         </div>
