@@ -31,7 +31,7 @@ export class ReservatService {
   }
 
   static async esborrar(idReserva:number){
-    await axios.post(process.env.API + '/api/reserves/reserva/esborrar',idReserva);
+    await axios.delete(process.env.API + '/api/reserves/reserva/eliminar/'+idReserva);
   }
 
   static async fromJSON(json:any):Promise<Reserva>{

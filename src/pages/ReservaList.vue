@@ -56,10 +56,10 @@
 
 import {onMounted, Ref, ref} from "vue";
 import {ReservatService} from "src/service/ReservaService";
-import {QTableColumn} from "quasar";
+import {QTableColumn, useQuasar} from "quasar";
 import {Reserva} from "src/model/Reserva";
 import moment from 'moment'
-
+const $q = useQuasar();
 const reserves:Ref<Reserva[]> = ref([] as Reserva[]);
 const columnes:QTableColumn[] = [
   {
@@ -99,7 +99,7 @@ const columnes:QTableColumn[] = [
 const filter = ref('')
 
 function esborrar(id:number){
-  this.$q.dialog({
+  $q.dialog({
     title: 'Confirm',
     message: 'Vol eliminar aquesta reserva?',
     ok: "D'acord",
@@ -108,8 +108,10 @@ function esborrar(id:number){
   }).onOk(async () => {
     console.log('>>>> OK',id)
     await ReservatService.esborrar(id);
-    //Refresh data
-    window.location.reload();
+    setTimeout(function(){
+      //Refresh data
+      window.location.reload();
+    },2000)
   })
 }
 
