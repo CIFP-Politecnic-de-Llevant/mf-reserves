@@ -117,7 +117,6 @@ function esborrar(id:number){
 
 onMounted(async ()=>{
   reserves.value = await ReservatService.findAllMyReserves();
-  console.log("reserves",reserves.value)
 })
 
 </script>
