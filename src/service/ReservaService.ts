@@ -1,6 +1,7 @@
 import {axios}  from 'boot/axios'
 import {Reserva} from "../model/Reserva";
 import {Ref} from "vue";
+import {Calendari} from "src/model/Calendari";
 
 export class ReservatService {
 
@@ -8,6 +9,14 @@ export class ReservatService {
     const response = await axios.get(process.env.API + '/api/reserves/reserva/' + id);
     const data:any = await response.data;
     return this.fromJSON(data)
+  }
+
+  static async findAllCalendaris(): Promise<Array<Calendari>> {
+    const response = await axios.get(process.env.API + '/api/reserves/calendaris');
+    const data = await response.data;
+    return Promise.all(data.map(async (calendari:any):Promise<Calendari>=>{
+      return await this.fromJSONCalendar(calendari)
+    }).sort());
   }
 
   static async findAllMyReserves(): Promise<Array<Reserva>> {
@@ -18,7 +27,7 @@ export class ReservatService {
     }));
   }
 
-  static async findAll(): Promise<Array<Reserva>> {
+  static async findAllReserves(): Promise<Array<Reserva>> {
     const response = await axios.get(process.env.API + '/api/reserves/reserves');
     const data = await response.data;
     return Promise.all(data.map(async (reserva:any):Promise<Reserva>=>{
@@ -46,4 +55,12 @@ export class ReservatService {
       usuariNom: json.usuariNom
     }
   }
+  static async fromJSONCalendar(json:any):Promise<Calendari>{
+    return {
+      id: json.idCalendari,
+      nom: json.descripcio
+
+    }
+  }
+
 }

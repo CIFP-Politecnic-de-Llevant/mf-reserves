@@ -25,12 +25,12 @@
       bordered
     >
       <q-list>
-        <q-item clickable to="/reserves">
+        <q-item v-for="calendari in calendaris" clickable :to="`/reserves/${calendari.id}`">
           <q-item-section avatar>
-            <q-icon name="group" />
+            <q-icon name="calendar_month" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Reserves Aula Magna</q-item-label>
+            <q-item-label>{{calendari.nom}}</q-item-label>
           </q-item-section>
         </q-item>
         <q-item clickable to="/logout">
@@ -51,12 +51,14 @@
 </template>
 
 
-<script>
+<script lang="ts">
 
-import { defineComponent,ref } from 'vue'
+import {defineComponent, onMounted, reactive, Ref, ref} from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import {Rol} from '../model/Rol.ts'
 import Menuapp from '../components/common/AppsMenu.vue';
+import {ReservatService} from "src/service/ReservaService";
+import {Calendari} from "src/model/Calendari";
 
 
 export default defineComponent({
@@ -77,11 +79,16 @@ export default defineComponent({
 
     const enableApps = enableGrupsCooperatius || enableConvalidacions || enableProfessoratManager;
 
+    const c:Calendari[] = [] as Calendari[];
+    const calendaris:Ref<Calendari[]> = ref([] as Calendari[]);
+
+
     return {
       rolsUser,
       rols,
       enableApps,
       leftDrawerOpen,
+      calendaris,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
@@ -89,6 +96,10 @@ export default defineComponent({
         router.go(-1);
       }
     }
+  },
+  async mounted (){
+    this.calendaris = await ReservatService.findAllCalendaris();
+    console.log("Calendaris",this.calendaris)
   }
 })
 </script>
