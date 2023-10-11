@@ -59,6 +59,8 @@ import {Rol} from '../model/Rol.ts'
 import Menuapp from '../components/common/AppsMenu.vue';
 import {ReservatService} from "src/service/ReservaService";
 import {Calendari} from "src/model/Calendari";
+import router from "src/router";
+import {route} from "quasar/wrappers";
 
 
 export default defineComponent({
@@ -89,6 +91,8 @@ export default defineComponent({
       enableApps,
       leftDrawerOpen,
       calendaris,
+      route,
+      router,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
@@ -97,6 +101,16 @@ export default defineComponent({
       }
     }
   },
+  /*beforeRouteUpdate(to,from){
+    const matchedTo = JSON.stringify(to.matched.map(m=>m.path));
+    const matchedFrom = JSON.stringify(from.matched.map(m=>m.path));
+
+    if(to.fullPath!=from.fullPath && matchedTo && matchedFrom && matchedTo===matchedFrom){
+      console.log("updating",to,from)
+      this.router.push(to.fullPath);
+      window.location.reload();
+    }
+  },*/
   async mounted (){
     this.calendaris = await ReservatService.findAllCalendaris();
     console.log("Calendaris",this.calendaris)

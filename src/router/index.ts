@@ -39,5 +39,15 @@ export default route(function (/* { store, ssrContext } */) {
     next();
   })
 
+  Router.afterEach((to,from)=>{
+      //Matched és un array que retorna les rutes que fan match a router.ts
+      const matchedTo = JSON.stringify(to.matched.map(m=>m.path));
+      const matchedFrom = JSON.stringify(from.matched.map(m=>m.path));
+
+      if(to.fullPath!=from.fullPath && matchedTo && matchedFrom && matchedTo===matchedFrom){
+        window.location.reload();
+      }
+  })
+
   return Router;
 });
