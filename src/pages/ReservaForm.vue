@@ -2,7 +2,7 @@
   <q-page class="flex column q-gutter-lg" padding>
 
     <p class="text-h3">{{reserva.descripcio || 'Nova reserva'}}</p>
-    <p class="text-subtitle2">Comprova la disponibilitat del calendari <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/u/0?cid=YTNiZjhjNmUzMzQ1ODYzMzRmZDk5NzM1MGVjZjA0ZTYwNTdjNWU0YjA5YTYyYTRlNmRkOTUxZWY5OTU1Y2Y5MkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">AQUÍ</a></p>
+    <p class="text-subtitle2">Comprova la disponibilitat del calendari <a class="text-red" target="_blank" :href="`https://calendar.google.com/calendar/embed?src=${calendari.id}&ctz=Europe%2FMadrid`">AQUÍ</a></p>
     <q-input v-model="reserva.descripcio" label="Motiu de la reserva"/>
 
 
@@ -36,12 +36,16 @@ import {ReservatService} from "src/service/ReservaService";
 import {Notify, useQuasar} from "quasar";
 import {useRoute, useRouter} from "vue-router";
 import moment from 'moment'
+import {Calendari} from "src/model/Calendari";
 
 const $q = useQuasar()
 const $router = useRouter()
 const $route = useRoute()
 
 const reserva:Ref<Reserva> = ref({} as Reserva);
+
+const calendari:Ref<Calendari> = ref({} as Calendari);
+const idcalendari:string = ($route.params.idcalendari)?$route.params.idcalendari+'':'';
 
 async function save(){
   if(!reserva.value.descripcio){
@@ -84,18 +88,20 @@ async function save(){
     ok: false // we want the user to not be able to close it
   })
 
-  await ReservatService.save(reserva.value)
+  await ReservatService.save(reserva.value,idcalendari)
   dialog.hide();
 
   //Redirect
-  await $router.push('/reserves');
+  await $router.push('/reserves/'+idcalendari);
 }
 
 onMounted(async ()=>{
+  calendari.value = await ReservatService.getCalendariById(idcalendari)
+
   const id:string = ($route.params.id)?$route.params.id+'':'';
 
   if(id && id!='') {
-    reserva.value = await ReservatService.getReservaById(id);
+    reserva.value = await ReservatService.getReservaById(id,idcalendari);
 
     //Parsejam les dates
     reserva.value.dataInici = moment(reserva.value.dataInici).format("YYYY-MM-DD HH:mm");

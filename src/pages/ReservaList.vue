@@ -2,12 +2,12 @@
   <q-page class="flex column" padding>
       <div class="row">
         <div class="col-12">
-
-          <p class="text-subtitle2">Visualitza el calendari <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/u/0?cid=YTNiZjhjNmUzMzQ1ODYzMzRmZDk5NzM1MGVjZjA0ZTYwNTdjNWU0YjA5YTYyYTRlNmRkOTUxZWY5OTU1Y2Y5MkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">AQUÍ</a></p>
-          <p class="text-subtitle2">Afegeix el calendari en format iCal amb aquesta URL: <a class="text-red" target="_blank" href="https://calendar.google.com/calendar/ical/a3bf8c6e334586334fd997350ecf04e6057c5e4b09a62a4e6dd951ef9955cf92%40group.calendar.google.com/public/basic.ics">https://calendar.google.com/calendar/ical/a3bf8c6e334586334fd997350ecf04e6057c5e4b09a62a4e6dd951ef9955cf92%40group.calendar.google.com/public/basic.ics</a></p>
+          <h3>Calendari: {{calendari.nom}}</h3>
+          <p class="text-subtitle2">Visualitza el calendari <a class="text-red" target="_blank" :href="`https://calendar.google.com/calendar/embed?src=${calendari.id}&ctz=Europe%2FMadrid`">AQUÍ</a></p>
+          <p class="text-subtitle2">Afegeix el calendari en format iCal amb aquesta URL: <a class="text-red" target="_blank" :href="`https://calendar.google.com/calendar/ical/${calendari.id}/public/basic.ics`">https://calendar.google.com/calendar/ical/{{calendari.id}}/public/basic.ics</a></p>
 
           <q-btn-group push class="q-mb-lg">
-            <q-btn  color="primary" label="Nova reserva" icon="add" :to="'/reserva'"/>
+            <q-btn  color="primary" label="Nova reserva" icon="add" :to="`/reserva/${calendari.id}`"/>
           </q-btn-group>
 
           <q-table
@@ -32,7 +32,7 @@
               <q-td :props="props">
                 <div>
                   <q-btn-group push>
-                    <q-btn icon="edit" color="primary" dense :to="'/reserva/'+props.value">
+                    <q-btn icon="edit" color="primary" dense :to="'/reserva/'+calendari.id+'/'+props.value">
                       <q-tooltip>
                         Editar
                       </q-tooltip>
@@ -59,8 +59,15 @@ import {ReservatService} from "src/service/ReservaService";
 import {QTableColumn, useQuasar} from "quasar";
 import {Reserva} from "src/model/Reserva";
 import moment from 'moment'
+import {Calendari} from "src/model/Calendari";
+import {useRoute} from "vue-router";
 const $q = useQuasar();
 const reserves:Ref<Reserva[]> = ref([] as Reserva[]);
+const calendari:Ref<Calendari> = ref({} as Calendari);
+const $route = useRoute()
+
+const idcalendari:string = ($route.params.idcalendari)?$route.params.idcalendari+'':'';
+
 const columnes:QTableColumn[] = [
   {
     name: 'descripcio',
@@ -107,7 +114,7 @@ function esborrar(id:number){
     persistent: true
   }).onOk(async () => {
     console.log('>>>> OK',id)
-    await ReservatService.esborrar(id);
+    await ReservatService.esborrar(id,idcalendari);
     setTimeout(function(){
       //Refresh data
       window.location.reload();
@@ -116,7 +123,8 @@ function esborrar(id:number){
 }
 
 onMounted(async ()=>{
-  reserves.value = await ReservatService.findAllMyReserves();
+  calendari.value = await ReservatService.getCalendariById(idcalendari)
+  reserves.value = await ReservatService.findAllMyReserves(idcalendari);
 })
 
 </script>

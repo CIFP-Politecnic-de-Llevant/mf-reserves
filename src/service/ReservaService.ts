@@ -5,18 +5,24 @@ import {Calendari} from "src/model/Calendari";
 
 export class ReservatService {
 
-  static async getReservaById(id:string,idCalendari:string): Promise<Reserva> {
-    const response = await axios.get(process.env.API + '/api/reserves/'+idCalendari+'/reserva/' + id);
-    const data:any = await response.data;
-    return this.fromJSON(data)
-  }
-
   static async findAllCalendaris(): Promise<Array<Calendari>> {
     const response = await axios.get(process.env.API + '/api/reserves/calendaris');
     const data = await response.data;
     return Promise.all(data.map(async (calendari:any):Promise<Calendari>=>{
       return await this.fromJSONCalendar(calendari)
     }).sort());
+  }
+
+  static async getCalendariById(idCalendari:string): Promise<Calendari> {
+    const response = await axios.get(process.env.API + '/api/reserves/calendari/'+idCalendari);
+    const data:any = await response.data;
+    return this.fromJSONCalendar(data)
+  }
+
+  static async getReservaById(id:string,idCalendari:string): Promise<Reserva> {
+    const response = await axios.get(process.env.API + '/api/reserves/'+idCalendari+'/reserva/' + id);
+    const data:any = await response.data;
+    return this.fromJSON(data)
   }
 
   static async findAllMyReserves(idCalendari:string): Promise<Array<Reserva>> {
