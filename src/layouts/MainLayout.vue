@@ -25,6 +25,20 @@
       bordered
     >
       <q-list>
+        <q-item v-if="!calendaris || calendaris.length==0">
+          <q-item-section>
+            <q-item-label>
+              <q-skeleton type="rect" animation="wave"/>
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item v-if="!calendaris || calendaris.length==0">
+          <q-item-section>
+            <q-item-label>
+              <q-skeleton type="rect" animation="wave"/>
+            </q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item v-for="calendari in calendaris" clickable :to="`/reserves/${calendari.id}`">
           <q-item-section avatar>
             <q-icon name="calendar_month" />
