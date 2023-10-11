@@ -5,8 +5,8 @@ import {Calendari} from "src/model/Calendari";
 
 export class ReservatService {
 
-  static async getReservaById(id:string): Promise<Reserva> {
-    const response = await axios.get(process.env.API + '/api/reserves/reserva/' + id);
+  static async getReservaById(id:string,idCalendari:string): Promise<Reserva> {
+    const response = await axios.get(process.env.API + '/api/reserves/'+idCalendari+'/reserva/' + id);
     const data:any = await response.data;
     return this.fromJSON(data)
   }
@@ -19,28 +19,28 @@ export class ReservatService {
     }).sort());
   }
 
-  static async findAllMyReserves(): Promise<Array<Reserva>> {
-    const response = await axios.get(process.env.API + '/api/reserves/myreserves');
+  static async findAllMyReserves(idCalendari:string): Promise<Array<Reserva>> {
+    const response = await axios.get(process.env.API + '/api/reserves/'+idCalendari+'/myreserves');
     const data = await response.data;
     return Promise.all(data.map(async (reserva:any):Promise<Reserva>=>{
         return await this.fromJSON(reserva)
     }));
   }
 
-  static async findAllReserves(): Promise<Array<Reserva>> {
-    const response = await axios.get(process.env.API + '/api/reserves/reserves');
+  static async findAllReserves(idCalendari:string): Promise<Array<Reserva>> {
+    const response = await axios.get(process.env.API + '/api/reserves/'+idCalendari+'/reserves');
     const data = await response.data;
     return Promise.all(data.map(async (reserva:any):Promise<Reserva>=>{
       return await this.fromJSON(reserva)
     }));
   }
 
-  static async save(reserva:Reserva){
-    await axios.post(process.env.API + '/api/reserves/reserva/desar',reserva);
+  static async save(reserva:Reserva,idCalendari:string){
+    await axios.post(process.env.API + '/api/reserves/'+idCalendari+'/reserva/desar',reserva);
   }
 
-  static async esborrar(idReserva:number){
-    await axios.delete(process.env.API + '/api/reserves/reserva/eliminar/'+idReserva);
+  static async esborrar(idReserva:number,idCalendari:string){
+    await axios.delete(process.env.API + '/api/reserves/'+idCalendari+'/reserva/eliminar/'+idReserva);
   }
 
   static async fromJSON(json:any):Promise<Reserva>{
