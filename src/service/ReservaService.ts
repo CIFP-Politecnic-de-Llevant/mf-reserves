@@ -6,9 +6,10 @@ import {Calendari} from "src/model/Calendari";
 export class ReservatService {
 
   static async findAllCalendaris(): Promise<Array<Calendari>> {
+    console.log("Entra")
     const response = await axios.get(process.env.API + '/api/reserves/calendaris');
     const data = await response.data;
-    return Promise.all(data.map(async (calendari:any):Promise<Calendari>=>{
+    return await Promise.all(data.map(async (calendari:any):Promise<Calendari>=>{
       return await this.fromJSONCalendar(calendari)
     }).sort());
   }

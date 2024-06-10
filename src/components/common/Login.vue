@@ -41,7 +41,7 @@ import {
 import {useQuasar} from "quasar";
 import {useRoute,useRouter} from "vue-router";
 import {axios}  from 'boot/axios'
-import {ref, Ref} from "vue";
+import {nextTick, ref, Ref} from "vue";
 
 const $q = useQuasar();
 const $route = useRoute()
@@ -77,8 +77,7 @@ const handleLoginSuccess = async (responseCredential: CredentialResponse) => {
     displayError.value = false;
 
     //Redirect
-    $router.push("/");
-
+    await $router.push("/");
   } else {
     displayError.value = true;
   }
