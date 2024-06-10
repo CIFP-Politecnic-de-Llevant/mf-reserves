@@ -65,31 +65,54 @@
 </template>
 
 
-<script lang="ts" setup>
+<script lang="ts">
 
-import {nextTick, onMounted, Ref, ref} from 'vue'
+import {defineComponent, Ref, ref} from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import {Rol} from '../model/Rol'
 import Menuapp from '../components/common/AppsMenu.vue';
 import {ReservatService} from "src/service/ReservaService";
 import {Calendari} from "src/model/Calendari";
 
-const leftDrawerOpen = ref(false)
-const rolsUser = (localStorage.getItem("rol"))?JSON.parse(localStorage.getItem("rol")!):[]; //Inicialitzem a un array buit si no existeix cap rol
-const rols = Rol;
+export default defineComponent({
+  name: 'MainLayout',
+  components:{
+    Menuapp
+  },
+  setup () {
+    const leftDrawerOpen = ref(false)
+    const rolsUser = (localStorage.getItem("rol"))?JSON.parse(localStorage.getItem("rol")!):[]; //Inicialitzem a un array buit si no existeix cap rol
+    const router = useRouter()
+    const route = useRoute()
+    const rols = Rol;
 
-const enableGrupsCooperatius = (process.env.APP_ENABLE_GRUPSCOOPERATIUS==='true');
-const enableConvalidacions=(process.env.APP_ENABLE_CONVALIDACIONS==='true');
-const enableProfessoratManager=(process.env.APP_ENABLE_PROFESSORATMANAGER==='true');
+    const enableGrupsCooperatius = (process.env.APP_ENABLE_GRUPSCOOPERATIUS==='true');
+    const enableConvalidacions=(process.env.APP_ENABLE_CONVALIDACIONS==='true');
+    const enableProfessoratManager=(process.env.APP_ENABLE_PROFESSORATMANAGER==='true');
 
-const enableApps = enableGrupsCooperatius || enableConvalidacions || enableProfessoratManager;
-const calendaris:Ref<Calendari[]> = ref([] as Calendari[]);
+    const enableApps = enableGrupsCooperatius || enableConvalidacions || enableProfessoratManager;
 
-onMounted(async () =>{
-  await nextTick(async ()=>{
-    console.log("next tick");
-    calendaris.value = await ReservatService.findAllCalendaris();
-    console.log("Calendaris", calendaris.value)
-  })
+    const calendaris:Ref<Calendari[]> = ref([] as Calendari[]);
+
+    return {
+      rolsUser,
+      rols,
+      enableApps,
+      leftDrawerOpen,
+      calendaris,
+      route,
+      router,
+      toggleLeftDrawer () {
+        leftDrawerOpen.value = !leftDrawerOpen.value
+      },
+      goBack(){
+        router.go(-1);
+      }
+    }
+  },
+  async mounted (){
+    this.calendaris = await ReservatService.findAllCalendaris();
+    console.log("Calendaris",this.calendaris)
+  }
 })
-
 </script>
